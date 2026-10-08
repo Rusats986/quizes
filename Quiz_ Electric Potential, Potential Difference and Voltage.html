@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quiz: Electric Potential, Potential Difference and Voltage</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#000;--text:#e8e8f4;--muted:#9a9ab0;--blue:#1a1aff;--violet:#7b7bf5;--good:#4ade80;--bad:#ff5d6c;
+--pill:linear-gradient(90deg,#8a8a8a 0%,#2a2a2a 55%,#000 100%);
+--font:"Helvetica Neue","Segoe UI",Arial,sans-serif}
+*,*:before,*:after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);font-weight:300;min-height:100vh;overflow-x:hidden;position:relative}
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;
+background:radial-gradient(circle at 70% 70%,#0a1218 0%,#000 65%);
+box-shadow:inset 0 0 0 2px rgba(120,140,255,.55),inset 6px -6px 18px rgba(255,80,200,.25),inset -6px 6px 18px rgba(80,220,255,.25)}
+.o1{width:360px;height:360px;right:-150px;bottom:-130px}
+.o2{width:280px;height:280px;left:-140px;top:-120px}
+.disc{position:fixed;right:6%;top:26px;width:110px;height:44px;border-radius:50%;z-index:0;pointer-events:none;
+background:linear-gradient(100deg,#1c1c1c,#0b0b0b);box-shadow:0 8px 0 -2px #4a2fff,0 10px 14px rgba(255,60,200,.35),inset 0 0 0 2px rgba(255,255,255,.35)}
+main{position:relative;z-index:1;max-width:760px;margin:0 auto;padding:28px 20px 56px}
+.grad{background:linear-gradient(90deg,#fff 0%,#a9a9ff 45%,#1a1aff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;font-weight:900;letter-spacing:-.02em}
+h1{font-size:clamp(34px,8vw,64px);line-height:1.02;margin:34px 0 14px}
+.sub{color:var(--muted);font-size:17px;margin:0 0 26px;max-width:52ch}
+.pill{display:inline-block;background:var(--pill);border:1px solid rgba(255,255,255,.18);border-radius:999px;color:#fff;padding:10px 26px;font-size:16px;font-weight:400}
+.team{margin-top:30px;color:var(--muted);font-size:14px}
+button{font:inherit;color:inherit;cursor:pointer}
+.start{margin-top:6px;font-size:18px;padding:14px 40px}
+.start:hover,.opt:hover:not(:disabled){border-color:#7b7bff}
+button:focus-visible{outline:2px solid #7b7bff;outline-offset:3px}
+.bar{height:6px;border-radius:99px;background:#1b1b24;margin:6px 0 10px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#fff,#1a1aff);transition:width .35s}
+.meta{display:flex;justify-content:space-between;color:var(--muted);font-size:14px}
+h2{font-size:clamp(24px,5.4vw,36px);line-height:1.15;margin:24px 0 22px;font-weight:700;letter-spacing:-.01em}
+.opts{display:grid;gap:12px}
+.opt{display:flex;gap:14px;align-items:center;text-align:left;width:100%;background:var(--pill);border:1px solid rgba(255,255,255,.16);border-radius:999px;padding:14px 24px;font-size:17px;font-weight:400;transition:border-color .2s}
+.opt b{color:var(--violet);font-weight:700;min-width:1.2em}
+.opt.good{border-color:var(--good);box-shadow:0 0 0 1px var(--good)}
+.opt.bad{border-color:var(--bad);box-shadow:0 0 0 1px var(--bad)}
+.opt:disabled{cursor:default}
+.opt.dim{opacity:.45}
+.fb{margin-top:22px;padding:16px 20px;border-left:3px solid var(--violet);background:rgba(120,120,255,.07);border-radius:0 14px 14px 0;font-size:16px;line-height:1.55;display:none}
+.fb strong{font-weight:700}
+.next{margin-top:20px;display:none}
+.score{font-size:clamp(70px,20vw,140px);line-height:1;margin:18px 0 6px}
+.rev{margin:26px 0 0;padding:0;list-style:none;display:grid;gap:10px}
+.rev li{display:flex;gap:12px;align-items:flex-start;font-size:15px;color:var(--muted);line-height:1.45}
+.dot{flex:none;width:12px;height:12px;border-radius:50%;margin-top:5px}
+.hide{display:none}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="orb o1"></div><div class="orb o2"></div><div class="disc"></div>
+<main>
+ <section id="intro">
+  <span class="pill">Team Project &middot; Quiz</span>
+  <h1 class="grad">Electric Potential, Potential Difference and Voltage</h1>
+  <p class="sub">8 questions based on our presentation. A door-handle spark can be thousands of volts. Why is it harmless? You will find out in question 8.</p>
+  <button class="pill start" id="startBtn">Start quiz</button>
+  <p class="team">Asel (Leader) &bull; Zhanadil (Theory) &bull; Tasnim (Visuals) &bull; Beket (Examples) &bull; Alizhan (Quiz)</p>
+ </section>
+
+ <section id="quiz" class="hide">
+  <div class="meta"><span id="count"></span><span id="pts"></span></div>
+  <div class="bar"><i id="fill"></i></div>
+  <h2 id="q"></h2>
+  <div class="opts" id="opts"></div>
+  <div class="fb" id="fb" aria-live="polite"></div>
+  <button class="pill next" id="nextBtn"></button>
+ </section>
+
+ <section id="result" class="hide">
+  <span class="pill">Your result</span>
+  <div class="score grad" id="scoreTxt"></div>
+  <p class="sub" id="msg"></p>
+  <ul class="rev" id="rev"></ul>
+  <button class="pill start" id="again">Try again</button>
+ </section>
+</main>
+
+<script>
+const Q=[
+{q:"Electric potential at a point is defined as:",o:["Force per unit charge","Electric potential energy per unit charge","Charge per unit time","Energy per unit time"],a:1,e:"V = U/q. It is the potential energy per unit charge at one point in an electric field."},
+{q:"Why does electric potential need a reference point?",o:["Because it is a vector quantity","Because charge is always zero at the reference","Because only differences have meaning, so we set V = 0 at ground or infinity","Because it is measured in joules"],a:2,e:"Potential is a scalar and needs a reference point where V = 0 (\"ground\" or \"infinity\"). In a potential difference the reference cancels out."},
+{q:"What is voltage?",o:["The potential energy of a single point","The potential difference between two points","The amount of charge in a wire","The resistance of a circuit"],a:1,e:"Voltage is the everyday engineering term for potential difference: ΔV = V_B − V_A = ΔU/q."},
+{q:"One volt is equal to:",o:["1 joule per coulomb","1 coulomb per joule","1 newton per metre","1 ampere per second"],a:0,e:"1 V = 1 J/C = 1 W/A. The unit is named after Alessandro Volta, inventor of the voltaic pile."},
+{q:"How do you measure the voltage across a lamp?",o:["Voltmeter connected in series","Ammeter connected in parallel","Voltmeter connected in parallel","Ammeter connected in series"],a:2,e:"A voltmeter is always connected in parallel with the part of the circuit you want to measure, as in the 9 V battery diagram."},
+{q:"In the hill analogy, a ball rolls because of a height difference. What is the electric equivalent?",o:["Charges move because of a potential difference","Charges move because of absolute potential","Charges move because of a reference point","Charges move because of a voltmeter"],a:0,e:"Just as a ball needs a height difference, not absolute altitude, charges move because of a potential difference. Without it there is no current."},
+{q:"A charge of 3 C moves through a potential difference of 9 V. How much energy does it gain or lose?",o:["3 J","12 J","27 J","0.33 J"],a:2,e:"ΔU = q · ΔV = 3 C × 9 V = 27 J."},
+{q:"A door-handle spark can be thousands of volts. Why is it harmless?",o:["Voltage is always harmless when it is static","The spark carries a tiny charge and energy, so current and energy are very small","Thousands of volts is actually low voltage","The reference point is ground, so ΔV = 0"],a:1,e:"High voltage alone does not mean high danger. Since ΔU = q · ΔV, a tiny charge gives tiny energy, so current and energy matter."}
+];
+const $=id=>document.getElementById(id);
+let i=0,score=0,log=[];
+const L=["A","B","C","D"];
+function show(id){["intro","quiz","result"].forEach(s=>$(s).classList.toggle("hide",s!==id));window.scrollTo(0,0)}
+function render(){
+ const d=Q[i];
+ $("count").textContent="Question "+(i+1)+" of "+Q.length;
+ $("pts").textContent="Score: "+score;
+ $("fill").style.width=(i/Q.length*100)+"%";
+ $("q").textContent=d.q;
+ $("fb").style.display="none";$("nextBtn").style.display="none";
+ const box=$("opts");box.innerHTML="";
+ d.o.forEach((t,k)=>{
+  const b=document.createElement("button");b.className="opt";
+  const l=document.createElement("b");l.textContent=L[k];
+  b.append(l,document.createTextNode(t));
+  b.onclick=()=>pick(k);box.appendChild(b);
+ });
+}
+function pick(k){
+ const d=Q[i],ok=k===d.a;
+ if(ok)score++;
+ log.push(ok);
+ [...$("opts").children].forEach((b,n)=>{
+  b.disabled=true;
+  if(n===d.a)b.classList.add("good");
+  else if(n===k)b.classList.add("bad");
+  else b.classList.add("dim");
+ });
+ $("pts").textContent="Score: "+score;
+ const fb=$("fb");
+ fb.innerHTML="";
+ const s=document.createElement("strong");s.textContent=ok?"Correct. ":"Not quite. ";
+ s.style.color=ok?"var(--good)":"var(--bad)";
+ fb.append(s,document.createTextNode(d.e));
+ fb.style.display="block";
+ const n=$("nextBtn");n.textContent=i<Q.length-1?"Next question":"See result";n.style.display="inline-block";n.focus();
+}
+function finish(){
+ $("fill").style.width="100%";
+ $("scoreTxt").textContent=score+" / "+Q.length;
+ const m=score===8?"Perfect. You have mastered potential and voltage.":score>=6?"Strong result. Review the questions you missed below.":score>=4?"Good start. Go back through the slides on potential difference and the volt.":"Keep going. Re-read the slides, then try again.";
+ $("msg").textContent=m;
+ const r=$("rev");r.innerHTML="";
+ Q.forEach((d,n)=>{
+  const li=document.createElement("li");
+  const dot=document.createElement("span");dot.className="dot";dot.style.background=log[n]?"var(--good)":"var(--bad)";
+  li.append(dot,document.createTextNode((n+1)+". "+d.q+" Answer: "+d.o[d.a]));
+  r.appendChild(li);
+ });
+ show("result");
+}
+$("startBtn").onclick=()=>{i=0;score=0;log=[];show("quiz");render()};
+$("nextBtn").onclick=()=>{if(i<Q.length-1){i++;render()}else finish()};
+$("again").onclick=()=>{i=0;score=0;log=[];show("quiz");render()};
+</script>
+</body>
+</html>
